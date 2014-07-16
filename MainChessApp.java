@@ -12,6 +12,7 @@ public class MainChessApp extends JFrame implements KeyListener,MouseListener,Mo
 	private BoardPlay board;
 	private Opening opening=new Opening();
 	private Instructions instructions=new Instructions();
+	private BoardAnalyse analysis;
     private boolean clicked,letgo;
     private String leftState,rightState;
     public MainChessApp() {
@@ -54,15 +55,25 @@ public class MainChessApp extends JFrame implements KeyListener,MouseListener,Mo
     	my=e.getY();//mouse pos y
     	if(leftState.equals("opening")){
     		String [] res=opening.onClick(mx,my,mb);
-    		String [] boardInfo=opening.retrieveInfo();
+    		if(res[0].equals("board-Play")){
+    			String [] boardInfo=opening.retrieveInfo();
+    			board=new BoardPlay(boardInfo);
+    		}
     		leftState=res[0];
     		rightState=res[1];
-    		board=new BoardPlay(boardInfo);
     	}
     	else if(leftState.equals("board-Play")){
 	    	String[] res=board.onClick(mx,my,mb);
+	    	if(res[0].equals("board-Analyse")){
+	    		analysis=new BoardAnalyse();
+	    	}
 	    	leftState=res[0];
 	    	rightState=res[1];
+    	}
+    	else if(leftState.equals("board-Analyse")){
+    		String[] res=analysis.onClick(mx,my,mb);
+    		leftState=res[0];
+    		rightState=res[1];
     	}
     	if(rightState.equals("instructions")){
     		String [] res=opening.onClick(mx,my,mb);
@@ -116,6 +127,9 @@ public class MainChessApp extends JFrame implements KeyListener,MouseListener,Mo
     	}
     	else if(leftState.equals("board-Play")){
 	    	board.reDraw(dbg);
+    	}
+    	else if(leftState.equals("board-Analyse")){
+    		analysis.reDraw(dbg);
     	}
     	if(rightState.equals("instructions")){
     		instructions.reDraw(dbg);
