@@ -88,8 +88,18 @@ public class CtrlPanelPlay {
     public String makeSquare(int x, int y){
     	return ((char)(97+x))+(""+(8-y));
     }
-    public void onClick(int mx,int my,int mb){
+    public String[] onClick(int mx,int my,int mb){
     	tabs.onClick(mx,my,mb);
+    	String[]res=new String[2];
+    	if(tabs.getActive()==0){
+    		res[0]="board-Play";
+    		res[1]="ctrlPanel-Play";
+    	}
+    	else if(tabs.getActive()==1){
+    		res[0]="board-Analyse";
+    		res[1]="ctrlPanel-Analyse";
+    	}
+    	return res;
     }
     public void onPress(int mx, int my, int mb){
     	scrollBar.onPress(mx,my,mb);

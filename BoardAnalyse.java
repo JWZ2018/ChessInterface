@@ -12,6 +12,8 @@ public class BoardAnalyse {
     private Piece [][]b;
     private boolean activeColor;
     private CtrlPanelAnalyse ctrlPanelAnalyse;
+    private String curMove;
+    private int curMoveIndex;
     public BoardAnalyse() {
     	this.top=60;
     	this.bottom=660;
@@ -33,7 +35,9 @@ public class BoardAnalyse {
     	this.activeColor=true;
     	this.pos=new FEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     	this.b=pos.getPos();
-    	this.ctrlPanelAnalyse=new CtrlPanelAnalyse();
+    	this.ctrlPanelAnalyse=new CtrlPanelAnalyse(b);
+    	this.curMoveIndex=0;
+    	this.curMove=ctrlPanelAnalyse.getCurMove();
     }
     public void drawBackground(Graphics dbg){
     	dbg.setColor(new Color(255,255,255));
@@ -123,7 +127,7 @@ public class BoardAnalyse {
     	drawBackground(dbg);
     	drawBoard(dbg);
     	drawPadding(dbg);
-    	if(activeColor){
+    	if(ctrlPanelAnalyse.getFlip()){
     		setPiecesWhite(dbg,b);
     	}
     	else{
@@ -135,9 +139,58 @@ public class BoardAnalyse {
      public String[] onClick(int mx, int my, int mb){
      	String[]res=new String[2];
      	ctrlPanelAnalyse.onClick(mx,my,mb);
+     	if(curMoveIndex!=ctrlPanelAnalyse.getCurMoveIndex()){
+     		curMoveIndex=ctrlPanelAnalyse.getCurMoveIndex();
+     		curMove=ctrlPanelAnalyse.getCurMove();
+     		activeColor=ctrlPanelAnalyse.getColor();
+     		b=parsePosition(curMove);
+     	}
      	res[0]="board-Analyse";
      	res[1]="ctrlPanel-Analyse";
      	return res;
      }
-    
+    public Piece[][] parsePosition(String pos){
+    	String[] rows = pos.split("/");
+    	Piece [][] board=new Piece[8][8];
+    	int x=0,y=0;
+    	for (int i=0;i<8;i++){
+    		//System.out.println("Rows: "+rows[i]);
+    		for (int j=0;j<rows[i].length();j++){
+    			int num=(int)(rows[i].charAt(j));
+    			//System.out.println(rows[i].charAt(j));
+    			//System.out.println(x+" "+y);
+    			if(num>=48 && num<=57){
+    				for(int k=0;k<num-48;k++){
+    					//System.out.println(x+" "+y);
+    					board[x][y]=null;
+    					y++;
+    				}
+    			}
+    			else{
+    				boolean color;
+    				char p=rows[i].charAt(j);
+    				if (p>=65 && p<=90){
+    					color=true;
+    				}
+    				else{
+    					color=false;
+    				}
+    				Piece piece=new Piece(rows[i].charAt(j),color,true);
+    				board[x][y]=piece;
+    				/*if(color && whiteCount<16){
+    					whitePieces[whiteCount]=piece;
+    					whiteCount++;
+    				}
+    				else if(!color && blackCount<16){
+    					blackPieces[blackCount]=piece;
+    					blackCount++;
+    				}*/
+    				y++;
+    			}
+    		}
+    		x++;
+    		y=0;
+    	}
+    	return board;
+    }
 }

@@ -30,17 +30,16 @@ public class Tabs {
     	dbg.setColor(new Color(0,255,0));
     	dbg.drawRect(tx+wid*active,ty,wid,len);
     }
-    public String[] onClick(int mx, int my, int mb){
+    public void onClick(int mx, int my, int mb){
     	for(int i=0;i<tabs.length;i++){
     		if(tabs[i].onClick(mx,my,mb)){
     			active=i;
     			break;
     		}
     	}
-    	String[]res=new String[2];
-    	res[0]="board-Play";
-    	res[1]="ctrlPnael-Play";
-    	return res;
+    }
+    public int getActive(){
+    	return active;
     }
     
 }

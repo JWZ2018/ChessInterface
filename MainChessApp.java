@@ -15,7 +15,7 @@ public class MainChessApp extends JFrame implements KeyListener,MouseListener,Mo
 	private BoardAnalyse analysis;
     private boolean clicked,letgo;
     private String leftState,rightState;
-    public MainChessApp() {
+    public MainChessApp(){
     	super("Chess");
     	addMouseListener(this);
     	addKeyListener(this);
@@ -94,12 +94,10 @@ public class MainChessApp extends JFrame implements KeyListener,MouseListener,Mo
     }
     public void keyTyped(KeyEvent e){
     	if(leftState.equals("opening")){
-    		
     		opening.onType(e.getKeyChar());
     	}
     }
     public void keyPressed(KeyEvent e){//check if any key is pressed
-    	
     	if(leftState.equals("opening")){
     		opening.onKeyPress(e.getKeyCode());
     	}

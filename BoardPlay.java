@@ -417,9 +417,8 @@ public class BoardPlay {
 	    	res[1]="ctrlPanel-Play";
 	    	return res;
     	}
-    	ctrlPanelPlay.onClick(mx,my,mb);
-    	res[0]="board-Play";
-    	res[1]="ctrlPanel-Play";
+    	res=ctrlPanelPlay.onClick(mx,my,mb);
+    	
     	return res;
     }
     public String setResult(boolean col,boolean draw){
