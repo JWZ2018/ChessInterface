@@ -46,6 +46,9 @@ public class MainChessApp extends JFrame implements KeyListener,MouseListener,Mo
     	if(leftState.equals("board-Play")){
     		board.onPress(mx,my,mb);
     	}
+    	else if(leftState.equals("board-Analyse")){
+    		analysis.onPress(mx,my,mb);
+    	}
     }
     public void mouseEntered(MouseEvent e){}//not used overriding methods
     public void mouseExited(MouseEvent e){}
@@ -72,6 +75,10 @@ public class MainChessApp extends JFrame implements KeyListener,MouseListener,Mo
     	}
     	else if(leftState.equals("board-Analyse")){
     		String[] res=analysis.onClick(mx,my,mb);
+    		if(res[0].equals("board-Play")){
+    			String [] boardInfo=opening.retrieveInfo();
+    			board=new BoardPlay(boardInfo);
+    		}
     		leftState=res[0];
     		rightState=res[1];
     	}
@@ -91,6 +98,9 @@ public class MainChessApp extends JFrame implements KeyListener,MouseListener,Mo
     	if(leftState.equals("board-Play")){
     		board.onRelease(mx,my,mb);
     	}
+    	else if(leftState.equals("board-Analyse")){
+    		analysis.onRelease(mx,my,mb);
+    	}
     }
     public void keyTyped(KeyEvent e){
     	if(leftState.equals("opening")){
@@ -105,8 +115,17 @@ public class MainChessApp extends JFrame implements KeyListener,MouseListener,Mo
     public void keyReleased(KeyEvent e){//check if any key is let go
     	
     }
-    public void mouseMoved(MouseEvent e){}
-    public void mouseDragged(MouseEvent e){}
+    public void mouseMoved(MouseEvent e){
+    	mb=e.getButton();
+    	mx=e.getX();
+    	my=e.getY();
+    	if(leftState.equals("board-Analyse")){
+    		analysis.onMove(mb,mx,my);
+    	}
+    }
+    public void mouseDragged(MouseEvent e){
+    	
+    }
     
     public boolean collidePoint(int cx,int cy, int px, int py, int wid, int len){
     	if(cx>=px && cx<=wid && cy>=py && cy<=len){

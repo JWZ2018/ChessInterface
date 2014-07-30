@@ -20,7 +20,10 @@ public class CtrlPanelAnalyse {
 	private boolean color;
 	private boolean flip;
 	private ClickButton flipButton;
+	private VertScroll scrollBar;
+	private Tabs tabs;
     public CtrlPanelAnalyse(Piece[][] board) {
+    	this.scrollBar=new VertScroll(new Rectangle(610,30,610,670), new Rectangle(650,150,210,300));
     	this.uploadButton=new ClickButton(new Rectangle(620,650,100,50),"Upload",new Color(0,255,0),20);
     	this.whiteMoves=new ArrayList<String>();
     	this.blackMoves=new ArrayList<String>();
@@ -37,13 +40,17 @@ public class CtrlPanelAnalyse {
     	this.color=true;
     	this.flip=true;
     	this.flipButton=new ClickButton(new Rectangle(700,550,70,30),"Flip",new Color(0,255,0),30);
+    	String[]tabNames=new String[2];
+    	tabNames[0]="Play Game";
+    	tabNames[1]="Analyse Game";
+    	this.tabs=new Tabs(tabNames,630,50,200,30,1);
     }
-    public void onClick(int mx,int my,int mb){
+    public String[] onClick(int mx,int my,int mb){
     	if(uploadButton.onClick(mx,my,mb)){
     		uploadFile();
     	}
     	if(forward.onClick(mx,my,mb) && curMoveIndex<whiteFens.size()+blackFens.size()){
-    		
+    		System.out.println("HI");
     		if(color){
     			curMove=whiteFens.get(curMoveIndex/2);
     		}
@@ -66,6 +73,17 @@ public class CtrlPanelAnalyse {
     	else if(flipButton.onClick(mx,my,mb)){
     		flip=!flip;
     	}
+    	tabs.onClick(mx,my,mb);
+    	String[]res=new String[2];
+    	if(tabs.getActive()==0){
+    		res[0]="board-Play";
+    		res[1]="ctrlPanel-Play";
+    	}
+    	else if(tabs.getActive()==1){
+    		res[0]="board-Analyse";
+    		res[1]="ctrlPanel-Analyse";
+    	}
+    	return res;
     }
     
     public void uploadFile(){
@@ -82,7 +100,8 @@ public class CtrlPanelAnalyse {
     	try{
     		BufferedReader f = new BufferedReader(new FileReader(dir+"\\"+filename));
     		String line=f.readLine();
-    		while(line.substring(0,1).equals("[") || line.equals("")){
+    		int i=0;
+    		while(line.equals("") || line.substring(0,1).equals("[")){
     			line=f.readLine();
     		}
     		StringTokenizer st=new StringTokenizer(line);
@@ -193,6 +212,7 @@ public class CtrlPanelAnalyse {
 	    		blackFens.add(makeFEN(boardCpy));
     		}
     	}
+    	scrollBar.setImLen(whiteMoves.size()*30);
     	uploaded=true;
     }
     public boolean isNumber(String s){
@@ -204,7 +224,27 @@ public class CtrlPanelAnalyse {
     	}
     	return true;
     }
+    public void drawWhiteMoves(Graphics dbg){
+    	dbg.setFont(new Font("Arial",Font.BOLD,20));
+    	dbg.setColor(new Color(0,0,0));
+    	for(int i=0;i<whiteMoves.size();i++){
+    		dbg.drawString((i+1)+".",660,scrollBar.getViewTop()+30*i);
+    		dbg.drawString(whiteMoves.get(i),690,scrollBar.getViewTop()+30*i);
+    	}
+    }
+    public void drawBlackMoves(Graphics dbg){
+    	dbg.setFont(new Font("Arial",Font.BOLD,20));
+    	dbg.setColor(new Color(0,0,0));
+    	for(int i=0;i<blackMoves.size();i++){
+    		dbg.drawString(blackMoves.get(i),780,scrollBar.getViewTop()+30*i);
+    	}
+    }
     public void reDraw(Graphics dbg){
+    	scrollBar.drawBar(dbg);
+    	drawWhiteMoves(dbg);
+    	drawBlackMoves(dbg);
+    	scrollBar.drawPadding(dbg,new Color(255,255,255));
+    	tabs.drawTabs(dbg);
     	uploadButton.drawButton(dbg);
     	dbg.setFont(new Font("Arial",Font.BOLD,15));
     	dbg.drawString(curFile,725,670);
@@ -270,5 +310,14 @@ public class CtrlPanelAnalyse {
     }
     public boolean getFlip(){
     	return flip;
+    }
+    public void onPress(int mx, int my, int mb){
+    	scrollBar.onPress(mx,my,mb);
+    }
+    public void onRelease(int mx, int my, int mb){
+    	scrollBar.onRelease(mx,my,mb);
+    }
+    public void onMove(int mx, int my, int mb){
+    	scrollBar.onMove(mx,my,mb);
     }
 }

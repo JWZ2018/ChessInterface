@@ -8,7 +8,7 @@ public class Tabs {
 	private ClickButton[]tabs;
 	private int tx,ty,wid,len;
 	private int active;
-    public Tabs(String[]tabNames,int tx,int ty,int width,int length) {
+    public Tabs(String[]tabNames,int tx,int ty,int width,int length,int active) {
     	this.tx=tx;
     	this.ty=ty;
     	this.wid=(int)((double)width/tabNames.length);
@@ -17,7 +17,7 @@ public class Tabs {
     	for(int i=0;i<tabs.length;i++){
     		tabs[i]=new ClickButton(new Rectangle(tx+i*wid,ty,wid,len),tabNames[i],new Color(200,200,200),12);
     	}
-    	this.active=0;
+    	this.active=active;
     }
     public void drawTabs(Graphics dbg){
     	for(int i=0;i<tabs.length;i++){

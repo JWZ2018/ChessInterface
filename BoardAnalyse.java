@@ -138,15 +138,14 @@ public class BoardAnalyse {
      }
      public String[] onClick(int mx, int my, int mb){
      	String[]res=new String[2];
-     	ctrlPanelAnalyse.onClick(mx,my,mb);
+     	res=ctrlPanelAnalyse.onClick(mx,my,mb);
      	if(curMoveIndex!=ctrlPanelAnalyse.getCurMoveIndex()){
      		curMoveIndex=ctrlPanelAnalyse.getCurMoveIndex();
      		curMove=ctrlPanelAnalyse.getCurMove();
      		activeColor=ctrlPanelAnalyse.getColor();
      		b=parsePosition(curMove);
      	}
-     	res[0]="board-Analyse";
-     	res[1]="ctrlPanel-Analyse";
+     	
      	return res;
      }
     public Piece[][] parsePosition(String pos){
@@ -192,5 +191,14 @@ public class BoardAnalyse {
     		y=0;
     	}
     	return board;
+    }
+    public void onPress(int mx, int my, int mb){
+    	ctrlPanelAnalyse.onPress(mx,my,mb);
+    }
+    public void onRelease(int mx, int my, int mb){
+    	ctrlPanelAnalyse.onRelease(mx,my,mb);
+    }
+    public void onMove(int mx, int my, int mb){
+    	ctrlPanelAnalyse.onMove(mx,my,mb);
     }
 }

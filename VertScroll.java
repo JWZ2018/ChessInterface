@@ -69,6 +69,13 @@ public class VertScroll {
     		barTop=Math.max(barTop,(int)(view.getY()));
     	}
     }
+    public void onMove(int mx,int my, int mb){
+    	if(scrollStart){
+    		barTop=my-diff;
+    		barTop=Math.min(barTop,(int)(view.getY()+view.getHeight())-barLen);
+    		barTop=Math.max(barTop,(int)(view.getY()));
+    	}
+    }
     public void incBarTop(double val){
     	if(imLen>view.getHeight()){
     		barTop+=(int)(val/imLen*view.getHeight());

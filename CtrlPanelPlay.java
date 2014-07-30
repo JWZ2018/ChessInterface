@@ -12,11 +12,11 @@ public class CtrlPanelPlay {
     public CtrlPanelPlay() {
     	this.whiteMoves=new ArrayList<String>();
     	this.blackMoves=new ArrayList<String>();
-    	this.scrollBar=new VertScroll(new Rectangle(610,30,610,670), new Rectangle(650,150,210,100));
+    	this.scrollBar=new VertScroll(new Rectangle(610,30,610,670), new Rectangle(650,150,210,500));
     	String[]tabNames=new String[2];
     	tabNames[0]="Play Game";
     	tabNames[1]="Analyse Game";
-    	this.tabs=new Tabs(tabNames,630,50,200,30);
+    	this.tabs=new Tabs(tabNames,630,50,200,30,0);
     }
     public void reDraw(Graphics dbg){
     	
